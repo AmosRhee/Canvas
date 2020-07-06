@@ -7,12 +7,24 @@
     <style>
         body{margin: 0;}
         #canvas{background: green;}
+        button{position: fixed; left: 0; top: 0; border-radius: 10px;}
     </style>
 </head>
 <body>
-    <canvas id = "canvas" width="300px" height="300px"></canvas>
+    <canvas id = "canvas"></canvas> <!--注意不能用css给宽,用JS给属性，而不是给样式-->
+    <button id="eraser">橡皮擦</button>
     <script>
         var canvas = document.getElementById('canvas');
+        xxxx()
+        window.onresize = function(){ //监听用户页面
+            xxxx()
+        }
+        function xxxx(){
+            var pageWidth = document.documentElement.clientWidth 
+            var pageHeight = document.documentElement.clientHeight
+            canvas.width = pageWidth
+            canvas.height = pageHeight
+        }
         var context = canvas.getContext('2d');
         function drawCircle(x, y, radius){
             context.beginPath()
@@ -24,40 +36,62 @@
         function drawLine(x1,y1,x2,y2){
             context.beginPath()
             // context.strokeStyle = "black";
-            context.lineWidth = 1      //注意lineWidth的 W 是大写
+            context.lineWidth = 4     //注意lineWidth的 W 是大写
             context.moveTo(x1,y1)
             context.lineTo(x2,y2)
             context.stroke()
             context.closePath()
-
         }
-       
-        
-        var painting = false
+
+        var painting = false//(初始值)
         var lastpoint = {x:undefined, y:undefined}
+        //----------鼠标按下-----------------//
         canvas.onmousedown = function(a){
-            painting = true
+            
             var x = a.clientX
             var y = a.clientY
-            lastpoint = {'x': x, 'y': y}
-            drawCircle(x, y, 1)
-        }
-        canvas.onmousemove = function(a){
-            if(painting){
-                var x = a.clientX
-                var y = a.clientY
-                var newPoint = {'x':x, 'y':y}
-                drawLine(lastpoint.x, lastpoint.y, newPoint.x, newPoint.y, )
-                lastpoint = newPoint
+            if(eraserEnabled){
+                painting = true
+                context.clearRect(x-5,y-5,10,10)
             }else{
-
+                painting = true
+                lastpoint = {'x': x, 'y': y}
+                drawCircle(x, y, 2)
             }
+            
+            
         }
+        //--------------鼠标移动------------//
+        canvas.onmousemove = function(a){
+            var x = a.clientX
+            var y = a.clientY
+            if(eraserEnabled){
+                if(painting){
+                    context.clearRect(x-5,y-5,10,10)
+                }
+            }else{
+                if(painting){
+                newpoint = {'x': x, 'y': y}
+                drawLine(lastpoint.x, lastpoint.y, newpoint.x, newpoint.y,)
+                lastpoint = newpoint
+                }      
+            }
+                
+        }
+        //---------------鼠标松开--------------//
          canvas.onmouseup = function(a){
             painting = false
         }
-        
+        /************************/
 
+        var eraserEnabled = false//橡皮擦初始值为false(关闭)
+        //-------------鼠标点击-----------------//
+        eraser.onclick = function(){
+            eraserEnabled = !eraserEnabled//鼠标点橡皮擦时切换状态（开/关）
+        }
     </script>
 </body>
 </html>
+<!-- var newPoint = {'x':x, 'y':y}
+drawLine(lastpoint.x, lastpoint.y, newPoint.x, newPoint.y, )
+lastpoint = newPoint -->
