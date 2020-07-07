@@ -47,14 +47,14 @@
         var lastpoint = {x:undefined, y:undefined}
         //----------鼠标按下-----------------//
         canvas.onmousedown = function(a){
-            
+            painting = true
             var x = a.clientX
             var y = a.clientY
             if(eraserEnabled){
-                painting = true
-                context.clearRect(x-5,y-5,10,10)
+                
+                context.clearRect(x-5,y-5,20,20)
             }else{
-                painting = true
+                
                 lastpoint = {'x': x, 'y': y}
                 drawCircle(x, y, 2)
             }
@@ -65,8 +65,8 @@
         canvas.onmousemove = function(a){
             var x = a.clientX
             var y = a.clientY
-            if(eraserEnabled){
-                if(painting){
+            if(eraserEnabled){ //先判断橡皮擦按钮有没有打开
+                if(painting){ //再判断有没有点击画布
                     context.clearRect(x-5,y-5,10,10)
                 }
             }else{
@@ -89,9 +89,13 @@
         eraser.onclick = function(){
             eraserEnabled = !eraserEnabled//鼠标点橡皮擦时切换状态（开/关）
         }
+        function add(n){
+            var sum = 0;
+            for(var i=0; i<=8; i++){          //????????????????????????????????????????
+                sum += i;
+            };
+        }
+        alert(add(8))
     </script>
 </body>
 </html>
-<!-- var newPoint = {'x':x, 'y':y}
-drawLine(lastpoint.x, lastpoint.y, newPoint.x, newPoint.y, )
-lastpoint = newPoint -->
