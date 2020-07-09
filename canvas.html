@@ -7,22 +7,29 @@
     <style>
         body{margin: 0;}
         #canvas{background: green;}
-        button{position: fixed; left: 0; top: 0; border-radius: 10px;}
+        .actions{position: fixed; left: 0; top: 0; border-radius: 10px;}
+        .actions > #brush{display: none;}
+        .actions.x > #brush{display: inline-block;}
+        .actions.x > #eraser{display: none;}
     </style>
 </head>
 <body>
     <canvas id = "canvas"></canvas> <!--注意不能用css给宽,用JS给属性，而不是给样式-->
-    <button id="eraser">橡皮擦</button>
+    <div id="actions" class="actions">
+        <button id="eraser">橡皮擦</button>
+        <button id="brush">画笔</button>
+    </div>
+    
 
 
     <script>
         var Canvas = document.getElementById('canvas');
         var context = Canvas.getContext('2d');
-        autosetCanvasSize()
-        listenTomouse()
+        autosetCanvasSize(Canvas)
+        listenTomouse(Canvas)
 
         // ----------------用户页面事件-------------//
-        function autosetCanvasSize(){
+        function autosetCanvasSize(Canvas){
             setCanvasSize()  // 先获取用户页面宽高
             window.onresize = function () {  // 然后监听用户页面宽高，如果改变重新获取
                 setCanvasSize()
@@ -36,7 +43,7 @@
         }
 
         //--------------鼠标事件----------------//
-        function listenTomouse() {
+        function listenTomouse(Canvas) {
                 //----------画圈-------------//
                 function drawCircle(x, y, radius) {
                     context.beginPath()
@@ -101,11 +108,17 @@
         /************************/
 
         var eraserEnabled = false//橡皮擦初始值为false(关闭)
-        //-------------鼠标点击-----------------//
+        //-------------橡皮擦点击-----------------//
         eraser.onclick = function(){
-            eraserEnabled = !eraserEnabled//鼠标点橡皮擦时切换状态（开/关）
+            //eraserEnabled = !eraserEnabled鼠标点橡皮擦时切换状态（开/关）
+            eraserEnabled = true
+            actions.className = 'actions x'
         }
 
+        brush.onclick = function(){
+            eraserEnabled = false
+            actions.className = 'actions'
+        }
 
 
         // var count = 0;
