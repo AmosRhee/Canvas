@@ -33,9 +33,13 @@
         .colors li.active{
             transform: scale(1.2); box-shadow: 0 0 4px  rgba(0, 0, 0, 0.9);
         }
+        .size {position: fixed; top: 20px; right: 30px;}
+        .size li{margin: 20px 0;}
+        .size .thin{border-top: 4px black solid; width: 40px;}
+        .size .thick{border-bottom: 8px black solid; width: 40px;}
     </style>
     
-    <script src="//at.alicdn.com/t/font_1933332_lyxyd5gbtp.js"></script>
+    <script src="//at.alicdn.com/t/font_1933332_ta3t4qclo0e.js"></script>
 </head>
 <body>
     <canvas id = "canvas"></canvas> <!--注意不能用css给宽,用JS给属性，而不是给样式-->
@@ -46,14 +50,23 @@
        <svg id="eraser" class="icon">
             <use xlink:href="#icon-Eraser-Tool"></use>
         </svg>
+        <svg id="clear" class="icon">
+            <use xlink:href="#icon-clear"></use>
+        </svg>
+        <svg id="download" class="icon">
+            <use xlink:href="#icon-download"></use>
+        </svg>
     </div>
     <ol class="colors"> 
         <li id="red" class="red"></li>
         <li id="green" class="green"></li>
         <li id="blue" class="blue"></li>
     </ol>
-
-
+    <ul class="size">
+        <li id="thin" class="thin"></li>
+        <li id="thick" class="thick"></li>
+    </ul>
+ 
     <script>
         var Canvas = document.getElementById('canvas');
         var context = Canvas.getContext('2d');
@@ -89,15 +102,13 @@
                 function drawLine(x1, y1, x2, y2) {
                     context.beginPath()
                     // context.strokeStyle = "black";
-                    context.lineWidth = 4     //注意lineWidth的 W 是大写
+                    context.lineWidth =  lineWidth    //注意lineWidth的 W 是大写
                     context.moveTo(x1, y1)
                     context.lineTo(x2, y2)
                     context.stroke()
                     context.closePath()
                 }
-
-               
-                
+    
             var using = false//(初始值)
             var lastpoint = { x: undefined, y: undefined }
             
@@ -194,6 +205,24 @@
             pen.classList.remove('active')
             
         }
+        var lineWidth = 4
+        thin.onclick = function(){
+            lineWidth = 4
+        }
+        thick.onclick = function(){
+            lineWidth = 8
+        }
+        clear.onclick = function(){
+            context.clearRect(0, 0, Canvas.width, Canvas.height)
+        }
+        download.onclick = function(){
+            var url = Canvas.toDataURL('image/png')
+            var a = document.createElement('a')
+            document.body.appendChild(a)
+            a.href = url
+            a.download = '我的画'
+            a.click()
+        }
         red.onclick= function(){
             context.fillStyle = 'red'
             context.strokeStyle = 'red'
@@ -215,6 +244,7 @@
             red.classList.remove('active')
             green.classList.remove('active')
         }
+        
     </script>
 </body>
 </html>
