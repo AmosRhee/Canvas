@@ -40,7 +40,7 @@
         var Canvas = document.getElementById('canvas');
         var context = Canvas.getContext('2d');
         autosetCanvasSize(Canvas)
-        listenTomouse(Canvas)
+        listenuser(Canvas)
 
         // ----------------用户页面事件-------------//
         function autosetCanvasSize(Canvas){
@@ -57,7 +57,7 @@
         }
 
         //--------------鼠标事件----------------//
-        function listenTomouse(Canvas) {
+        function listenuser(Canvas) {1
                 //----------画圈-------------//
                 function drawCircle(x, y, radius) {
                     context.beginPath()
@@ -78,10 +78,46 @@
                     context.closePath()
                 }
 
+               
                 
-                var using = false//(初始值)
-                var lastpoint = { x: undefined, y: undefined }
-
+            var using = false//(初始值)
+            var lastpoint = { x: undefined, y: undefined }
+            
+            //------------特性检测-------------//
+            if (document.body.ontouchstart !== undefined) { ///判断是触屏还是非触屏设备，只需要判断ontouchstart是不是document.body的key
+                //触屏设备
+                //-----------触屏事件------------//
+                Canvas.ontouchstart = function (aaa) {
+                    using = true
+                    var x = aaa.touches[0].clientX
+                    var y = aaa.touches[0].clientY
+                    if (eraserEnabled) {
+                        context.clearRect(x - 5, y - 5, 20, 20)
+                    } else {
+                        lastpoint = { 'x': x, 'y': y }
+                        drawCircle(x, y, 2)
+                    }
+                }
+                Canvas.ontouchmove = function (aaa) {
+                    var x = aaa.touches[0].clientX
+                    var y = aaa.touches[0].clientY
+                    if (eraserEnabled) { //先判断橡皮擦按钮有没有打开
+                        if (using) { //再判断有没有点击画布
+                            context.clearRect(x - 5, y - 5, 10, 10)
+                        }
+                    } else {
+                        if (using) {
+                            newpoint = { 'x': x, 'y': y }
+                            drawLine(lastpoint.x, lastpoint.y, newpoint.x, newpoint.y,)
+                            lastpoint = newpoint
+                        }
+                    }
+                }
+                Canvas.ontouchend = function (aaa) {
+                    using = false
+                }
+            } else {
+                //非触屏设备
                 //----------鼠标按下-----------------//
                 Canvas.onmousedown = function (a) {
                     using = true
@@ -116,7 +152,10 @@
                 Canvas.onmouseup = function (a) {
                     using = false
                 }
-            }  
+            }
+        }
+
+                  
     
       
         /************************/
@@ -133,19 +172,6 @@
             eraserEnabled = false
             actions.className = 'actions'
         }
-
-
-        // var count = 0;
-        // var arr = []
-        // for(var i = 0; i<5; i++){
-        //     Newarr = [];
-        //     for(var j = 0; j<5; j++){
-                
-        //         Newarr.push(++count);
-        //     }
-        //     arr.push(Newarr);
-        // }
-        // console.log(arr);
     </script>
 </body>
 </html>
