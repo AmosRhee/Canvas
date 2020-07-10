@@ -4,20 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas</title>
-    <style>
+    <style >
         body{margin: 0;}
-        #canvas{background: green;}
+        #canvas{background:;}
         .actions{position: fixed; left: 0; top: 0; border-radius: 10px;}
         .actions > #brush{display: none;}
         .actions.x > #brush{display: inline-block;}
         .actions.x > #eraser{display: none;}
     </style>
+    <style type="text/css">
+        .icon {
+           width: 2em; height: 2em;
+           vertical-align: -0.15em;
+           fill: currentColor;
+           overflow: hidden;
+        }
+    </style>
+    
+    <script src="//at.alicdn.com/t/font_1933332_lyxyd5gbtp.js"></script>
 </head>
 <body>
     <canvas id = "canvas"></canvas> <!--注意不能用css给宽,用JS给属性，而不是给样式-->
     <div id="actions" class="actions">
-        <button id="eraser">橡皮擦</button>
-        <button id="brush">画笔</button>
+        <div>
+            
+            
+        </div>
+        <button id="eraser"><svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-huabi"></use>
+        </svg></button>
+        <button id="brush"><svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-Eraser-Tool"></use>
+        </svg></button>
     </div>
     
 
