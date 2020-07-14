@@ -89,7 +89,7 @@
         }
 
         //--------------鼠标事件----------------//
-        function listenuser(Canvas) {1
+        function listenuser(Canvas) {
                 //----------画圈-------------//
                 function drawCircle(x, y, radius) {
                     context.beginPath()
@@ -104,20 +104,22 @@
                     context.beginPath()
                     // context.strokeStyle = "black";
                     context.lineWidth =  lineWidth    //注意lineWidth的 W 是大写
-                    context.moveTo(x1, y1)
-                    context.lineTo(x2, y2)
+                    context.moveTo(x1, y1)//起点
+                    context.lineTo(x2, y2)//终点
                     context.stroke()
                     context.closePath()
                 }
     
             var using = false//(初始值)
             var lastpoint = { x: undefined, y: undefined }
+            var newpoint = { x: undefined, y: undefined }
             
             //------------特性检测-------------//
             if (document.body.ontouchstart !== undefined) { ///判断是触屏还是非触屏设备，只需要判断ontouchstart是不是document.body的key
                 //触屏设备
                 //-----------触屏事件------------//
                 Canvas.ontouchstart = function (aaa) {
+                    console.log(aaa)
                     using = true
                     var x = aaa.touches[0].clientX
                     var y = aaa.touches[0].clientY
@@ -150,6 +152,7 @@
                 //非触屏设备
                 //----------鼠标按下-----------------//
                 Canvas.onmousedown = function (a) {
+                    console.log(a)
                     using = true
                     var x = a.clientX
                     var y = a.clientY
